@@ -1,0 +1,27 @@
+Imagina que debes unir una tabla de "Ventas" con una de "Proveedores". Si al hacer el merge obtienes muchos valores nulos, 
+¿qué técnica de transformación de texto debiste aplicar antes para asegurar la consistencia?
+
+Respuesta: Estandarización de texto (conversión a minúsculas/mayúsculas y eliminación de espacios mediante trim/strip).
+La operación de cruce (merge) exige igualdad estricta a nivel de caracteres. 
+Diferencias no visibles como espacios o capitalización
+ entre claves equivalentes resultan en fallos de coincidencia y generación de valores nulos.
+
+¿Qué importancia tiene para un Ingeniero o Técnico en Informática asegurar la 
+"Calidad de Datos" antes de entregar un reporte a una gerencia?
+
+Respuesta: Evitar la distorsión de métricas críticas en la toma de decisiones estratégicas. Según las acciones del código, sin calidad de datos ocurriría lo siguiente:
+1. Duplicados: Inflarían el volumen real de operaciones y métricas financieras.
+2. Valores nulos (NaN): Sesgarían cálculos de ingresos (Monto_CLP) o perderían trazabilidad de inventario (Depto).
+3. Inconsistencia de formato (ej. mayúsculas en 'Estado'): Fragmentaría las agrupaciones, reportando 'completado' y 'Completado' como métricas separadas, 
+invalidando los consolidados entregados a gerencia.
+
+
+Explicacion 1: El sistema procesa el texto de forma literal. 
+"Empresa A" y "empresa a " se interpretan como entidades distintas debido al uso de minúsculas y al espacio extra final. 
+Al no existir coincidencia exacta de caracteres, 
+el algoritmo descarta la unión y retorna un campo vacío (nulo).
+
+Explicacion 2: Datos erróneos ("sucios") generan reportes falsos. Decisiones gerenciales 
+(presupuestos, inventarios) 
+basadas en registros duplicados o incompletos fundamentan la estrategia en un escenario operativo y financiero irreal, 
+provocando pérdidas.

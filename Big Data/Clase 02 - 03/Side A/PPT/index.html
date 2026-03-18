@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoreo Lechería Paillaco — Presentación</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.min.css" id="theme">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="reveal">
+<div class="slides">
+
+<!-- ══ SLIDE 1 — PORTADA ══════════════════════════════════════ -->
+<section class="slide-portada">
+    <div class="portada-badge">Big Data · Clase 02</div>
+    <h1 class="portada-titulo">Monitoreo Lechería<br>Paillaco</h1>
+    <p class="portada-subtitulo">Análisis interactivo de producción y salud del rebaño — Marzo 2026</p>
+    <div class="portada-meta">
+        <div class="portada-meta-item"><span class="dot"></span> 187 registros</div>
+        <div class="portada-meta-item"><span class="dot" style="background:var(--accent-gold)"></span> 16 vacas</div>
+        <div class="portada-meta-item"><span class="dot" style="background:var(--accent-emerald)"></span> 28 días</div>
+    </div>
+</section>
+
+<!-- ══ SLIDE 2 — CURVA DE PRODUCCIÓN DIARIA ═══════════════════ -->
+<section>
+    <div class="slide-header">
+        <h2 class="slide-titulo">Curva de Producción Diaria</h2>
+        <p class="slide-subtitulo">Producción total (L) vs registros evaluados por día</p>
+    </div>
+    <div class="kpi-strip">
+        <div class="kpi-card">
+            <p class="kpi-value">4.886 L</p>
+            <p class="kpi-label">Producción Total</p>
+        </div>
+        <div class="kpi-card">
+            <p class="kpi-value">26.1 L</p>
+            <p class="kpi-label">Promedio / Registro</p>
+        </div>
+        <div class="kpi-card">
+            <p class="kpi-value">28</p>
+            <p class="kpi-label">Días Monitoreados</p>
+        </div>
+    </div>
+    <div class="chart-wrap chart-h-std">
+        <canvas id="chartProduccion"></canvas>
+    </div>
+</section>
+
+<!-- ══ SLIDE 3 — DISTRIBUCIÓN DE TEMPERATURA ══════════════════ -->
+<section>
+    <div class="slide-header">
+        <h2 class="slide-titulo">Distribución de Temperatura Corporal</h2>
+        <p class="slide-subtitulo">Histograma de temperaturas registradas — Umbral crítico: 40 °C</p>
+    </div>
+    <div class="kpi-strip">
+        <div class="kpi-card">
+            <p class="kpi-value">38.5 °C</p>
+            <p class="kpi-label">Temp. Promedio</p>
+        </div>
+        <div class="kpi-card">
+            <p class="kpi-value">39.5 °C</p>
+            <p class="kpi-label">Temp. Máxima</p>
+        </div>
+        <div class="kpi-card">
+            <p class="kpi-value">0</p>
+            <p class="kpi-label">Sobre 40 °C</p>
+        </div>
+    </div>
+    <div class="chart-wrap chart-h-std">
+        <canvas id="chartTemperatura"></canvas>
+    </div>
+</section>
+
+<!-- ══ SLIDE 4 — CORRELACIÓN PRODUCCIÓN vs TEMPERATURA ════════ -->
+<section>
+    <div class="slide-header">
+        <h2 class="slide-titulo">Correlación: Producción vs Temperatura</h2>
+        <p class="slide-subtitulo">Dispersión coloreada por estado de salud</p>
+    </div>
+    <div class="chart-wrap chart-h-tall">
+        <canvas id="chartScatter"></canvas>
+    </div>
+</section>
+
+<!-- ══ SLIDE 5 — DISTRIBUCIÓN ESTADO DE SALUD ═════════════════ -->
+<section>
+    <div class="slide-header">
+        <h2 class="slide-titulo">Estado de Salud del Rebaño</h2>
+        <p class="slide-subtitulo">Distribución porcentual de los registros</p>
+    </div>
+    <div class="kpi-strip">
+        <div class="kpi-card">
+            <p class="kpi-value" style="-webkit-text-fill-color:#10b981;color:#10b981">85</p>
+            <p class="kpi-label">Saludable</p>
+        </div>
+        <div class="kpi-card">
+            <p class="kpi-value" style="-webkit-text-fill-color:#f59e0b;color:#f59e0b">72</p>
+            <p class="kpi-label">En Observación</p>
+        </div>
+        <div class="kpi-card">
+            <p class="kpi-value" style="-webkit-text-fill-color:#f43f5e;color:#f43f5e">30</p>
+            <p class="kpi-label">Tratamiento</p>
+        </div>
+    </div>
+    <div class="chart-wrap chart-h-std">
+        <canvas id="chartDonut"></canvas>
+    </div>
+</section>
+
+<!-- ══ SLIDE 6 — PRODUCCIÓN PROMEDIO POR VACA ═════════════════ -->
+<section>
+    <div class="slide-header">
+        <h2 class="slide-titulo">Producción Promedio por Vaca</h2>
+        <p class="slide-subtitulo">Ranking de producción media de litros por registro</p>
+    </div>
+    <div class="chart-wrap chart-h-xtall">
+        <canvas id="chartVacas"></canvas>
+    </div>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.min.js"></script>
+<script>
+Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    transition: 'slide',
+    transitionSpeed: 'default',
+    backgroundTransition: 'fade',
+    center: true,
+    width: 1920,
+    height: 1080,
+    margin: 0.02
+});
+</script>
+
+<script>
+/* ═══════════════════════════════════════════════
+   DATA — monitoreo_lecheria_paillaco_LIMPIO.csv
+   ═══════════════════════════════════════════════ */
+const D=[
+{i:"VACA-138",f:"2026-03-11",l:17.6,t:39.0,e:"Tratamiento"},
+{i:"VACA-112",f:"2026-03-02",l:16.6,t:38.2,e:"Saludable"},
+{i:"VACA-133",f:"2026-03-16",l:15.4,t:38.1,e:"En Observacion"},
+{i:"VACA-129",f:"2026-03-15",l:23.1,t:37.5,e:"Tratamiento"},
+{i:"VACA-137",f:"2026-03-24",l:38.7,t:37.9,e:"Tratamiento"},
+{i:"VACA-111",f:"2026-03-13",l:19.9,t:39.4,e:"Tratamiento"},
+{i:"VACA-142",f:"2026-03-26",l:38.2,t:37.6,e:"En Observacion"},
+{i:"VACA-110",f:"2026-03-21",l:22.0,t:38.2,e:"Saludable"},
+{i:"VACA-110",f:"2026-03-14",l:35.7,t:38.0,e:"En Observacion"},
+{i:"VACA-111",f:"2026-03-28",l:27.0,t:37.8,e:"Tratamiento"},
+{i:"VACA-137",f:"2026-03-19",l:18.1,t:39.2,e:"Saludable"},
+{i:"VACA-119",f:"2026-03-27",l:30.5,t:38.5,e:"Saludable"},
+{i:"VACA-120",f:"2026-03-12",l:17.2,t:37.7,e:"En Observacion"},
+{i:"VACA-119",f:"2026-03-26",l:32.4,t:39.4,e:"En Observacion"},
+{i:"VACA-129",f:"2026-03-23",l:22.8,t:39.2,e:"Saludable"},
+{i:"VACA-133",f:"2026-03-26",l:34.1,t:38.7,e:"En Observacion"},
+{i:"VACA-123",f:"2026-03-27",l:36.3,t:38.6,e:"Saludable"},
+{i:"VACA-121",f:"2026-03-21",l:27.1,t:37.8,e:"Saludable"},
+{i:"VACA-111",f:"2026-03-26",l:21.6,t:38.0,e:"Saludable"},
+{i:"VACA-121",f:"2026-03-27",l:18.5,t:38.9,e:"En Observacion"},
+{i:"VACA-132",f:"2026-03-26",l:18.7,t:38.6,e:"Saludable"},
+{i:"VACA-149",f:"2026-03-14",l:29.3,t:39.1,e:"Saludable"},
+{i:"VACA-112",f:"2026-03-11",l:27.9,t:37.8,e:"En Observacion"},
+{i:"VACA-138",f:"2026-03-01",l:38.9,t:39.4,e:"Saludable"},
+{i:"VACA-142",f:"2026-03-26",l:0.04,t:39.1,e:"Saludable"},
+{i:"VACA-111",f:"2026-03-27",l:22.2,t:38.1,e:"Saludable"},
+{i:"VACA-138",f:"2026-03-20",l:36.0,t:38.1,e:"Saludable"},
+{i:"VACA-111",f:"2026-03-26",l:26.2,t:39.0,e:"En Observacion"},
+{i:"VACA-120",f:"2026-03-26",l:20.8,t:38.7,e:"En Observacion"},
+{i:"VACA-149",f:"2026-03-26",l:35.9,t:37.7,e:"En Observacion"},
+{i:"VACA-132",f:"2026-03-27",l:37.9,t:39.3,e:"Saludable"},
+{i:"VACA-137",f:"2026-03-26",l:27.7,t:38.9,e:"En Observacion"},
+{i:"VACA-138",f:"2026-03-06",l:33.1,t:38.7,e:"En Observacion"},
+{i:"VACA-142",f:"2026-03-05",l:32.4,t:37.7,e:"Saludable"},
+{i:"VACA-147",f:"2026-03-25",l:25.4,t:39.4,e:"Saludable"},
+{i:"VACA-138",f:"2026-03-16",l:33.8,t:37.6,e:"En Observacion"},
+{i:"VACA-147",f:"2026-03-26",l:35.1,t:39.3,e:"En Observacion"},
+{i:"VACA-138",f:"2026-03-21",l:15.7,t:38.6,e:"En Observacion"},
+{i:"VACA-138",f:"2026-03-27",l:34.5,t:37.7,e:"Tratamiento"},
+{i:"VACA-149",f:"2026-03-07",l:36.5,t:38.8,e:"Tratamiento"},
+{i:"VACA-137",f:"2026-03-03",l:27.2,t:37.6,e:"Saludable"},
+{i:"VACA-138",f:"2026-03-26",l:36.2,t:39.0,e:"En Observacion"},
+{i:"VACA-137",f:"2026-03-26",l:39.0,t:37.5,e:"Saludable"},
+{i:"VACA-111",f:"2026-03-15",l:37.6,t:38.4,e:"Tratamiento"},
+{i:"VACA-138",f:"2026-03-20",l:15.9,t:39.0,e:"Saludable"},
+{i:"VACA-137",f:"2026-03-18",l:34.0,t:39.1,e:"En Observacion"},
+{i:"VACA-147",f:"2026-03-18",l:38.0,t:38.7,e:"Tratamiento"},
+{i:"VACA-123",f:"2026-03-15",l:29.1,t:38.6,e:"Saludable"},
+{i:"VACA-147",f:"2026-03-05",l:23.8,t:38.5,e:"Saludable"},
+{i:"VACA-110",f:"2026-03-24",l:15.2,t:37.8,e:"En Observacion"},
+{i:"VACA-137",f:"2026-03-17",l:27.3,t:39.2,e:"Tratamiento"},
+{i:"VACA-147",f:"2026-03-11",l:31.3,t:37.8,e:"En Observacion"},
+{i:"VACA-139",f:"2026-03-26",l:26.5,t:38.8,e:"Saludable"},
+{i:"VACA-138",f:"2026-03-04",l:31.8,t:38.2,e:"Saludable"},
+{i:"VACA-100",f:"2026-03-13",l:17.2,t:37.9,e:"Saludable"},
+{i:"VACA-123",f:"2026-03-28",l:36.3,t:39.5,e:"En Observacion"},
+{i:"VACA-142",f:"2026-03-23",l:21.4,t:39.3,e:"Saludable"},
+{i:"VACA-120",f:"2026-03-26",l:32.6,t:38.0,e:"Tratamiento"},
+{i:"VACA-138",f:"2026-03-26",l:21.1,t:38.5,e:"En Observacion"},
+{i:"VACA-138",f:"2026-03-26",l:31.7,t:37.8,e:"En Observacion"},
+{i:"VACA-120",f:"2026-03-11",l:20.6,t:38.5,e:"Saludable"},
+{i:"VACA-137",f:"2026-03-05",l:30.1,t:38.1,e:"Tratamiento"},
+{i:"VACA-100",f:"2026-03-26",l:21.0,t:38.2,e:"En Observacion"},
+{i:"VACA-123",f:"2026-03-24",l:30.8,t:38.1,e:"Saludable"},
+{i:"VACA-149",f:"2026-03-28",l:28.8,t:37.9,e:"En Observacion"},
+{i:"VACA-138",f:"2026-03-28",l:31.0,t:38.6,e:"En Observacion"},
+{i:"VACA-149",f:"2026-03-17",l:16.9,t:39.3,e:"En Observacion"},
+{i:"VACA-100",f:"2026-03-23",l:39.3,t:38.2,e:"Saludable"},
+{i:"VACA-100",f:"2026-03-22",l:26.0,t:38.5,e:"En Observacion"},
+{i:"VACA-120",f:"2026-03-26",l:23.6,t:39.0,e:"Saludable"},
+{i:"VACA-150",f:"2026-03-26",l:34.6,t:38.1,e:"En Observacion"},
+{i:"VACA-119",f:"2026-03-21",l:18.2,t:38.6,e:"En Observacion"},
+{i:"VACA-137",f:"2026-03-22",l:32.5,t:39.4,e:"Saludable"},
+{i:"VACA-149",f:"2026-03-09",l:20.1,t:39.1,e:"En Observacion"},
+{i:"VACA-100",f:"2026-03-01",l:25.1,t:38.1,e:"En Observacion"},
+{i:"VACA-112",f:"2026-03-01",l:21.5,t:37.5,e:"En Observacion"},
+{i:"VACA-112",f:"2026-03-04",l:23.7,t:38.0,e:"Saludable"},
+{i:"VACA-142",f:"2026-03-18",l:21.3,t:38.2,e:"En Observacion"},
+{i:"VACA-133",f:"2026-03-08",l:19.4,t:39.5,e:"En Observacion"},
+{i:"VACA-138",f:"2026-03-02",l:21.9,t:38.8,e:"En Observacion"},
+{i:"VACA-112",f:"2026-03-21",l:21.5,t:38.8,e:"Saludable"},
+{i:"VACA-138",f:"2026-03-18",l:33.3,t:37.9,e:"En Observacion"},
+{i:"VACA-132",f:"2026-03-11",l:36.9,t:39.0,e:"Saludable"},
+{i:"VACA-139",f:"2026-03-26",l:35.7,t:38.2,e:"Saludable"},
+{i:"VACA-121",f:"2026-03-11",l:39.8,t:37.8,e:"Saludable"},
+{i:"VACA-133",f:"2026-03-07",l:30.4,t:38.7,e:"Saludable"},
+{i:"VACA-100",f:"2026-03-01",l:15.1,t:38.7,e:"Saludable"},
+{i:"VACA-138",f:"2026-03-25",l:22.6,t:39.1,e:"Saludable"},
+{i:"VACA-123",f:"2026-03-19",l:35.5,t:39.3,e:"Saludable"},
+{i:"VACA-119",f:"2026-03-26",l:37.8,t:38.5,e:"Saludable"},
+{i:"VACA-100",f:"2026-03-26",l:15.5,t:39.0,e:"Saludable"},
+{i:"VACA-111",f:"2026-03-14",l:21.6,t:39.4,e:"Tratamiento"},
+{i:"VACA-138",f:"2026-03-05",l:28.0,t:38.8,e:"Saludable"},
+{i:"VACA-139",f:"2026-03-18",l:35.9,t:37.6,e:"Saludable"},
+{i:"VACA-138",f:"2026-03-03",l:18.9,t:39.3,e:"Tratamiento"},
+{i:"VACA-112",f:"2026-03-26",l:38.6,t:37.6,e:"Saludable"},
+{i:"VACA-149",f:"2026-03-03",l:23.3,t:39.5,e:"Saludable"},
+{i:"VACA-119",f:"2026-03-16",l:18.2,t:39.4,e:"En Observacion"},
+{i:"VACA-121",f:"2026-03-02",l:18.3,t:38.8,e:"Saludable"},
+{i:"VACA-112",f:"2026-03-16",l:22.79,t:38.8,e:"En Observacion"},
+{i:"VACA-138",f:"2026-03-26",l:34.3,t:38.2,e:"En Observacion"},
+{i:"VACA-139",f:"2026-03-06",l:15.9,t:38.2,e:"Tratamiento"},
+{i:"VACA-132",f:"2026-03-10",l:28.3,t:37.5,e:"Tratamiento"},
+{i:"VACA-119",f:"2026-03-06",l:15.8,t:38.7,e:"Saludable"},
+{i:"VACA-132",f:"2026-03-07",l:34.1,t:38.3,e:"Tratamiento"},
+{i:"VACA-121",f:"2026-03-04",l:21.9,t:37.9,e:"En Observacion"},
+{i:"VACA-149",f:"2026-03-20",l:35.1,t:38.8,e:"En Observacion"},
+{i:"VACA-137",f:"2026-03-26",l:15.1,t:38.8,e:"En Observacion"},
+{i:"VACA-138",f:"2026-03-07",l:25.7,t:38.2,e:"Saludable"},
+{i:"VACA-121",f:"2026-03-18",l:26.9,t:39.3,e:"En Observacion"},
+{i:"VACA-147",f:"2026-03-06",l:27.0,t:39.2,e:"Saludable"},
+{i:"VACA-138",f:"2026-03-24",l:16.5,t:37.9,e:"En Observacion"},
+{i:"VACA-111",f:"2026-03-19",l:32.5,t:39.1,e:"En Observacion"},
+{i:"VACA-112",f:"2026-03-18",l:23.9,t:38.8,e:"Saludable"},
+{i:"VACA-137",f:"2026-03-02",l:39.8,t:38.3,e:"En Observacion"},
+{i:"VACA-121",f:"2026-03-26",l:37.8,t:39.2,e:"Saludable"},
+{i:"VACA-111",f:"2026-03-08",l:35.6,t:37.7,e:"En Observacion"},
+{i:"VACA-120",f:"2026-03-28",l:17.5,t:38.7,e:"En Observacion"},
+{i:"VACA-142",f:"2026-03-06",l:33.9,t:38.4,e:"Saludable"},
+{i:"VACA-133",f:"2026-03-26",l:17.6,t:38.7,e:"Tratamiento"},
+{i:"VACA-121",f:"2026-03-04",l:27.5,t:37.8,e:"Saludable"},
+{i:"VACA-138",f:"2026-03-26",l:30.7,t:39.0,e:"Tratamiento"},
+{i:"VACA-149",f:"2026-03-07",l:19.6,t:39.1,e:"En Observacion"},
+{i:"VACA-111",f:"2026-03-26",l:28.9,t:38.3,e:"En Observacion"},
+{i:"VACA-132",f:"2026-03-05",l:22.0,t:37.8,e:"En Observacion"},
+{i:"VACA-147",f:"2026-03-26",l:15.6,t:38.2,e:"Saludable"},
+{i:"VACA-138",f:"2026-03-03",l:31.7,t:37.7,e:"Saludable"},
+{i:"VACA-149",f:"2026-03-26",l:15.7,t:39.4,e:"En Observacion"},
+{i:"VACA-120",f:"2026-03-17",l:37.5,t:37.8,e:"Saludable"},
+{i:"VACA-123",f:"2026-03-26",l:24.3,t:37.7,e:"En Observacion"},
+{i:"VACA-129",f:"2026-03-07",l:36.2,t:39.4,e:"En Observacion"},
+{i:"VACA-119",f:"2026-03-26",l:23.8,t:38.4,e:"Saludable"},
+{i:"VACA-138",f:"2026-03-14",l:18.2,t:37.9,e:"Saludable"},
+{i:"VACA-119",f:"2026-03-20",l:21.7,t:38.1,e:"En Observacion"},
+{i:"VACA-129",f:"2026-03-26",l:15.0,t:38.6,e:"En Observacion"},
+{i:"VACA-138",f:"2026-03-22",l:38.2,t:37.5,e:"Tratamiento"},
+{i:"VACA-111",f:"2026-03-19",l:15.9,t:38.8,e:"En Observacion"},
+{i:"VACA-111",f:"2026-03-26",l:33.0,t:39.4,e:"En Observacion"},
+{i:"VACA-147",f:"2026-03-24",l:28.6,t:38.2,e:"Saludable"},
+{i:"VACA-137",f:"2026-03-03",l:38.4,t:38.7,e:"Saludable"},
+{i:"VACA-120",f:"2026-03-19",l:22.1,t:38.2,e:"Saludable"},
+{i:"VACA-142",f:"2026-03-08",l:32.7,t:39.3,e:"En Observacion"},
+{i:"VACA-139",f:"2026-03-26",l:15.2,t:39.3,e:"Saludable"},
+{i:"VACA-112",f:"2026-03-06",l:21.9,t:38.2,e:"Saludable"},
+{i:"VACA-100",f:"2026-03-25",l:34.6,t:39.3,e:"Tratamiento"},
+{i:"VACA-100",f:"2026-03-25",l:34.6,t:39.1,e:"En Observacion"},
+{i:"VACA-147",f:"2026-03-14",l:19.5,t:38.3,e:"Saludable"},
+{i:"VACA-121",f:"2026-03-26",l:15.3,t:38.7,e:"En Observacion"},
+{i:"VACA-150",f:"2026-03-26",l:31.7,t:38.6,e:"Tratamiento"},
+{i:"VACA-120",f:"2026-03-10",l:21.5,t:38.4,e:"En Observacion"},
+{i:"VACA-149",f:"2026-03-12",l:39.1,t:38.6,e:"Saludable"},
+{i:"VACA-150",f:"2026-03-25",l:34.6,t:39.0,e:"Saludable"},
+{i:"VACA-138",f:"2026-03-20",l:39.3,t:37.8,e:"Tratamiento"},
+{i:"VACA-110",f:"2026-03-14",l:35.8,t:37.8,e:"Saludable"},
+{i:"VACA-100",f:"2026-03-24",l:35.8,t:38.4,e:"En Observacion"},
+{i:"VACA-138",f:"2026-03-26",l:15.7,t:38.5,e:"En Observacion"},
+{i:"VACA-121",f:"2026-03-26",l:17.8,t:37.9,e:"Saludable"},
+{i:"VACA-100",f:"2026-03-10",l:24.7,t:39.2,e:"En Observacion"},
+{i:"VACA-121",f:"2026-03-26",l:17.1,t:37.8,e:"Saludable"},
+{i:"VACA-120",f:"2026-03-14",l:29.5,t:38.2,e:"Tratamiento"},
+{i:"VACA-111",f:"2026-03-02",l:31.5,t:37.5,e:"Saludable"},
+{i:"VACA-132",f:"2026-03-26",l:23.1,t:38.1,e:"En Observacion"},
+{i:"VACA-138",f:"2026-03-06",l:34.5,t:38.8,e:"En Observacion"},
+{i:"VACA-129",f:"2026-03-02",l:17.8,t:38.7,e:"Saludable"},
+{i:"VACA-123",f:"2026-03-14",l:19.5,t:38.4,e:"En Observacion"},
+{i:"VACA-121",f:"2026-03-02",l:21.0,t:38.0,e:"Saludable"},
+{i:"VACA-120",f:"2026-03-25",l:34.4,t:38.8,e:"Saludable"},
+{i:"VACA-111",f:"2026-03-26",l:31.1,t:38.3,e:"En Observacion"},
+{i:"VACA-111",f:"2026-03-26",l:29.9,t:39.1,e:"En Observacion"},
+{i:"VACA-139",f:"2026-03-21",l:25.2,t:39.2,e:"Saludable"},
+{i:"VACA-111",f:"2026-03-27",l:21.7,t:37.8,e:"En Observacion"},
+{i:"VACA-112",f:"2026-03-23",l:37.5,t:39.0,e:"Tratamiento"},
+{i:"VACA-123",f:"2026-03-26",l:19.8,t:39.3,e:"Saludable"},
+{i:"VACA-100",f:"2026-03-06",l:19.9,t:38.1,e:"En Observacion"},
+{i:"VACA-132",f:"2026-03-27",l:15.1,t:38.0,e:"En Observacion"},
+{i:"VACA-139",f:"2026-03-06",l:32.4,t:39.2,e:"En Observacion"},
+{i:"VACA-123",f:"2026-03-14",l:28.4,t:39.1,e:"En Observacion"},
+{i:"VACA-120",f:"2026-03-17",l:32.8,t:38.7,e:"Saludable"},
+{i:"VACA-123",f:"2026-03-07",l:29.5,t:38.2,e:"En Observacion"},
+{i:"VACA-111",f:"2026-03-26",l:36.9,t:39.1,e:"Saludable"},
+{i:"VACA-111",f:"2026-03-19",l:15.8,t:39.2,e:"Saludable"},
+{i:"VACA-100",f:"2026-03-18",l:31.8,t:37.5,e:"En Observacion"},
+{i:"VACA-112",f:"2026-03-21",l:16.0,t:38.0,e:"Tratamiento"},
+{i:"VACA-133",f:"2026-03-14",l:16.8,t:39.1,e:"Saludable"},
+{i:"VACA-121",f:"2026-03-26",l:30.4,t:39.2,e:"En Observacion"},
+{i:"VACA-120",f:"2026-03-15",l:21.6,t:38.6,e:"En Observacion"}
+];
+
+/* ── Process ──────────────────────────────────── */
+const M=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const pDay={}, rDay={};
+D.forEach(r=>{if(!pDay[r.f]){pDay[r.f]=0;rDay[r.f]=0}pDay[r.f]+=r.l;rDay[r.f]++});
+const dates=Object.keys(pDay).sort();
+const labels=dates.map(d=>{const p=d.split('-');return+p[2]+' '+M[+p[1]-1]});
+const prod=dates.map(d=>Math.round(pDay[d]*10)/10);
+const recs=dates.map(d=>rDay[d]);
+
+const bL=[],bC=[],bS=0.25;
+for(let t=37;t<40.5;t+=bS){
+    const lo=Math.round(t*100)/100,hi=Math.round((t+bS)*100)/100;
+    bL.push(lo.toFixed(1)+'-'+hi.toFixed(1));
+    let c=0;D.forEach(r=>{if(r.t>=lo&&r.t<hi)c++});bC.push(c);
+}
+
+const sS=D.filter(r=>r.e==='Saludable').map(r=>({x:r.t,y:r.l}));
+const sO=D.filter(r=>r.e==='En Observacion').map(r=>({x:r.t,y:r.l}));
+const sT=D.filter(r=>r.e==='Tratamiento').map(r=>({x:r.t,y:r.l}));
+
+const eC={Saludable:0,'En Observacion':0,Tratamiento:0};
+D.forEach(r=>{if(eC[r.e]!==undefined)eC[r.e]++});
+
+const vS={},vC={};
+D.forEach(r=>{if(!vS[r.i]){vS[r.i]=0;vC[r.i]=0}vS[r.i]+=r.l;vC[r.i]++});
+const vE=Object.keys(vS).map(id=>({id,avg:Math.round(vS[id]/vC[id]*100)/100})).sort((a,b)=>b.avg-a.avg);
+
+/* ── Palette ──────────────────────────────────── */
+const CY='rgba(6,182,212,1)',CY3='rgba(6,182,212,0.3)';
+const GL='rgba(245,158,11,1)',GL4='rgba(245,158,11,0.55)';
+const EM='rgba(16,185,129,1)',EM4='rgba(16,185,129,0.55)';
+const RS='rgba(244,63,94,1)',RS4='rgba(244,63,94,0.55)';
+const GR='rgba(148,163,184,0.08)';
+
+Chart.defaults.color='#94a3b8';
+Chart.defaults.font.family="'Inter',sans-serif";
+Chart.defaults.plugins.legend.labels.usePointStyle=true;
+
+/* ── 1 Producción diaria ─────────────────────── */
+new Chart(document.getElementById('chartProduccion'),{
+    type:'line',
+    data:{labels,datasets:[
+        {label:'Producción (L)',data:prod,borderColor:CY,backgroundColor:CY3,fill:true,tension:.35,pointRadius:4,pointHoverRadius:7,yAxisID:'y'},
+        {label:'Registros',data:recs,borderColor:RS,backgroundColor:'transparent',borderDash:[6,4],tension:.3,pointRadius:3,pointStyle:'crossRot',yAxisID:'y1'}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+        scales:{x:{grid:{color:GR}},
+            y:{position:'left',title:{display:true,text:'Producción Total (L)',color:CY},grid:{color:GR},ticks:{color:CY}},
+            y1:{position:'right',title:{display:true,text:'Registros',color:RS},grid:{drawOnChartArea:false},ticks:{color:RS}}
+        }
+    }
+});
+
+/* ── 2 Histograma temperatura ────────────────── */
+new Chart(document.getElementById('chartTemperatura'),{
+    type:'bar',
+    data:{labels:bL,datasets:[{label:'Registros',data:bC,
+        backgroundColor:bL.map(l=>parseFloat(l)>=40?RS4:CY3),
+        borderColor:bL.map(l=>parseFloat(l)>=40?RS:CY),
+        borderWidth:1,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+        scales:{x:{grid:{color:'rgba(148,163,184,0.06)'},ticks:{maxRotation:60,font:{size:10}}},
+            y:{grid:{color:GR},title:{display:true,text:'Cantidad de registros'}}}}
+});
+
+/* ── 3 Scatter ───────────────────────────────── */
+new Chart(document.getElementById('chartScatter'),{
+    type:'scatter',
+    data:{datasets:[
+        {label:'Saludable',data:sS,backgroundColor:EM4,borderColor:EM,pointRadius:6,pointHoverRadius:9},
+        {label:'En Observación',data:sO,backgroundColor:GL4,borderColor:GL,pointRadius:6,pointHoverRadius:9},
+        {label:'Tratamiento',data:sT,backgroundColor:RS4,borderColor:RS,pointRadius:6,pointHoverRadius:9}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+        scales:{x:{title:{display:true,text:'Temperatura Corporal (°C)'},grid:{color:GR}},
+            y:{title:{display:true,text:'Litros de Leche'},grid:{color:GR}}}}
+});
+
+/* ── 4 Donut ─────────────────────────────────── */
+new Chart(document.getElementById('chartDonut'),{
+    type:'doughnut',
+    data:{labels:['Saludable','En Observación','Tratamiento'],
+        datasets:[{data:[eC.Saludable,eC['En Observacion'],eC.Tratamiento],
+            backgroundColor:[EM4,GL4,RS4],borderColor:[EM,GL,RS],borderWidth:2,hoverOffset:16}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'60%',
+        plugins:{legend:{position:'right',labels:{padding:24,font:{size:15}}}}}
+});
+
+/* ── 5 Bar horizontal por vaca ───────────────── */
+new Chart(document.getElementById('chartVacas'),{
+    type:'bar',
+    data:{labels:vE.map(e=>e.id),datasets:[{label:'Producción Promedio (L)',data:vE.map(e=>e.avg),
+        backgroundColor:vE.map((_,i)=>`hsla(${180+(i*12)%60},70%,55%,0.6)`),
+        borderColor:vE.map((_,i)=>`hsla(${180+(i*12)%60},70%,55%,1)`),
+        borderWidth:1,borderRadius:6}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false}},
+        scales:{x:{title:{display:true,text:'Litros Promedio'},grid:{color:GR}},
+            y:{grid:{display:false},ticks:{font:{size:13,weight:500}}}}}
+});
+</script>
+</body>
+</html>
