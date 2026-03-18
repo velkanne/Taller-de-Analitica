@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe - Dimensiones de Calidad de Datos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-card: #111827;
+            --bg-card-hover: #1a2332;
+            --border-card: #1e293b;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --accent-purple: #8b5cf6;
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem 5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border-card);
+        }
+
+        header .tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            padding: 0.35rem 1rem;
+            border-radius: 20px;
+            margin-bottom: 1.2rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.6rem;
+        }
+
+        header .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 300;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.2rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .meta-info span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .question-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            padding: 2rem 2.2rem;
+            margin-bottom: 2rem;
+            transition: border-color 0.3s ease, transform 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            border-radius: 16px 0 0 16px;
+        }
+
+        .question-block:nth-child(1)::before { background: var(--accent-blue); }
+        .question-block:nth-child(2)::before { background: var(--accent-purple); }
+        .question-block:nth-child(3)::before { background: var(--accent-emerald); }
+        .question-block:nth-child(4)::before { background: var(--accent-amber); }
+        .question-block:nth-child(5)::before { background: var(--accent-rose); }
+
+        .question-block:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .question-label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.6rem;
+        }
+
+        .question-block:nth-child(1) .question-label { color: var(--accent-blue); }
+        .question-block:nth-child(2) .question-label { color: var(--accent-purple); }
+        .question-block:nth-child(3) .question-label { color: var(--accent-emerald); }
+        .question-block:nth-child(4) .question-label { color: var(--accent-amber); }
+        .question-block:nth-child(5) .question-label { color: var(--accent-rose); }
+
+        .question-text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.4rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .answer h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 1.2rem 0 0.5rem;
+        }
+
+        .answer p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.7rem;
+        }
+
+        .answer ul {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0;
+        }
+
+        .answer ul li {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            padding: 0.3rem 0 0.3rem 1.2rem;
+            position: relative;
+        }
+
+        .answer ul li::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--text-muted);
+            font-family: monospace;
+            font-weight: 700;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.82rem;
+        }
+
+        thead th {
+            background: rgba(59, 130, 246, 0.08);
+            color: var(--text-primary);
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-card);
+        }
+
+        tbody td {
+            padding: 0.6rem 1rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        tbody tr:hover td {
+            background: rgba(59, 130, 246, 0.03);
+        }
+
+        .code-block {
+            background: #0d1117;
+            border: 1px solid #21262d;
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            margin: 0.8rem 0;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: #c9d1d9;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .code-block .comment { color: #8b949e; }
+        .code-block .keyword { color: #ff7b72; }
+        .code-block .string { color: #a5d6ff; }
+        .code-block .number { color: #79c0ff; }
+        .code-block .func { color: #d2a8ff; }
+
+        .highlight-box {
+            background: rgba(59, 130, 246, 0.06);
+            border-left: 3px solid var(--accent-blue);
+            padding: 0.8rem 1.2rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+            font-size: 0.84rem;
+            color: var(--text-secondary);
+        }
+
+        .highlight-box.critical {
+            background: rgba(244, 63, 94, 0.06);
+            border-left-color: var(--accent-rose);
+        }
+
+        .highlight-box.success {
+            background: rgba(16, 185, 129, 0.06);
+            border-left-color: var(--accent-emerald);
+        }
+
+        footer {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-card);
+            margin-top: 1rem;
+        }
+
+        footer p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 2rem 1.2rem; }
+            header h1 { font-size: 1.6rem; }
+            .question-block { padding: 1.5rem; }
+            .meta-info { flex-direction: column; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+
+    <div class="container">
+        <header>
+            <div class="tag">Clase 03 &mdash; Taller de Auditoria</div>
+            <h1>Dimensiones de Calidad de Datos</h1>
+            <p class="subtitle">Informe tecnico &mdash; Preguntas y respuestas sobre calidad, gobernanza y auditoria de datos</p>
+            <div class="meta-info">
+                <span>Fecha: 18 de marzo de 2026</span>
+                <span>Dataset: auditoria_calidad.csv</span>
+                <span>Lenguaje: Python / Pandas</span>
+            </div>
+        </header>
+
+        <main>
+            <!-- PREGUNTA A -->
+            <section class="question-block">
+                <div class="question-label">Pregunta A &mdash; Impacto en el Negocio</div>
+                <div class="question-text">Si una empresa retail tiene una baja Completitud en la columna "Telefono de Contacto" de sus clientes, &iquest;como afecta esto a su dimension de Actualidad en una campana de marketing de ultimo minuto?</div>
+                <div class="answer">
+                    <p>La dimension de <strong>Completitud</strong> mide la proporcion de campos que contienen datos validos vs. nulos. La dimension de <strong>Actualidad</strong> (Timeliness) mide si los datos estan disponibles y vigentes en el momento que se necesitan.</p>
+
+                    <p>La relacion causal es directa: si la columna <code>Telefono_Contacto</code> tiene baja Completitud (muchos <code>NaN</code> o vacios), la empresa no puede ejecutar una campana de marketing de ultimo minuto por canal telefonico (SMS, llamadas) porque <strong>no tiene datos con los cuales operar en tiempo real</strong>. La Actualidad se degrada automaticamente porque, incluso si los telefonos existentes estuvieran al dia, el subconjunto alcanzable es insuficiente para cumplir el objetivo de la campana dentro de la ventana temporal requerida.</p>
+
+                    <h3>En terminos operativos:</h3>
+                    <ul>
+                        <li>Se reduce la <strong>cobertura efectiva</strong> del canal.</li>
+                        <li>Se fuerza una migracion a canales alternativos (email, redes sociales), que pueden no ser viables en plazos cortos.</li>
+                        <li>La falta de Completitud convierte la Actualidad en una metrica irrelevante: no importa cuan actualizados esten los pocos telefonos disponibles si el volumen no alcanza el umbral de viabilidad de la campana.</li>
+                    </ul>
+
+                    <div class="highlight-box">
+                        La Completitud es una <strong>precondicion</strong> de la Actualidad en este escenario. Sin datos presentes, la dimension temporal pierde significado operativo.
+                    </div>
+                </div>
+            </section>
+
+            <!-- PREGUNTA B -->
+            <section class="question-block">
+                <div class="question-label">Pregunta B &mdash; Diferencia Tecnica</div>
+                <div class="question-text">Explica la diferencia entre Exactitud y Validez usando el ejemplo de la columna "Edad" visto en el codigo.</div>
+                <div class="answer">
+                    <p>En el codigo del notebook:</p>
+
+                    <div class="code-block">
+                        <span class="comment"># EXACTITUD: rango logico 0-120</span><br>
+                        exactitud = df[(<span class="func">df</span>[<span class="string">'Edad'</span>] &lt; <span class="number">0</span>) | (<span class="func">df</span>[<span class="string">'Edad'</span>] &gt; <span class="number">120</span>)]<br><br>
+                        <span class="comment"># VALIDEZ: formato de email con '@'</span><br>
+                        validez = df[~<span class="func">df</span>[<span class="string">'Email'</span>].<span class="func">str.contains</span>(<span class="string">'@'</span>)]
+                    </div>
+
+                    <p><strong>Exactitud</strong> evalua si el valor <em>representa correctamente la realidad del mundo</em>. Pedro Perez con <code>Edad = -5</code> y Luis Jara con <code>Edad = 150</code> fallan en Exactitud: son tipos de dato numericos correctos, pero no corresponden a edades humanas reales. El filtro <code>(Edad &lt; 0) | (Edad &gt; 120)</code> implementa una regla de dominio semantico.</p>
+
+                    <p><strong>Validez</strong> evalua si el valor <em>cumple con las reglas estructurales o de formato predefinidas</em>. <code>l.jara</code> como email falla en Validez: no contiene <code>@</code>, por lo que viola la especificacion sintactica de un email (RFC 5322). El dato podria ser "exacto" (podria ser el texto que el usuario ingreso), pero no es un email valido segun la regla formal.</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Dimension</th>
+                                <th>Pregunta que responde</th>
+                                <th>Ejemplo en "Edad"</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Exactitud</strong></td>
+                                <td>&iquest;El valor refleja la realidad?</td>
+                                <td><code>-5</code> es un entero valido, pero no es una edad real. Falla.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Validez</strong></td>
+                                <td>&iquest;El valor cumple el formato/regla definida?</td>
+                                <td>Si la regla fuera "Edad debe ser entero", <code>-5</code> pasaria validez pero fallaria exactitud.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="highlight-box">
+                        Un dato puede ser <strong>valido pero inexacto</strong> (edad 999 como entero es valido en formato, pero no es una edad real) y puede ser <strong>exacto pero invalido</strong> (una fecha correcta escrita en formato DD/MM/YY cuando el sistema espera YYYY-MM-DD).
+                    </div>
+                </div>
+            </section>
+
+            <!-- PREGUNTA C -->
+            <section class="question-block">
+                <div class="question-label">Pregunta C &mdash; Herramientas de Python</div>
+                <div class="question-text">&iquest;Por que el comando .describe() (que muestra promedio, min y max) es una herramienta excelente para detectar fallas de dimensiones de Exactitud?</div>
+                <div class="answer">
+                    <p><code>df.describe()</code> genera estadisticas descriptivas: <code>count</code>, <code>mean</code>, <code>std</code>, <code>min</code>, <code>25%</code>, <code>50%</code>, <code>75%</code>, <code>max</code>.</p>
+
+                    <p>Para la columna <code>Edad</code> del dataset del notebook, <code>.describe()</code> mostraria:</p>
+
+                    <div class="code-block">
+                        min &nbsp; = <span class="number">-5.0</span> &nbsp;&nbsp;&nbsp; <span class="comment">&larr; Anomalia inmediata</span><br>
+                        max &nbsp; = <span class="number">150.0</span> &nbsp;&nbsp; <span class="comment">&larr; Anomalia inmediata</span><br>
+                        mean &nbsp;= <span class="number">~40.4</span> &nbsp;&nbsp; <span class="comment">&larr; Sesgado por outliers</span><br>
+                        std &nbsp; = elevada &nbsp;<span class="comment">&larr; Dispersion anormal</span>
+                    </div>
+
+                    <h3>&iquest;Por que es eficaz para Exactitud?</h3>
+                    <ul>
+                        <li>Es una funcion de <strong>una sola linea</strong> que audita multiples columnas numericas simultaneamente.</li>
+                        <li>Los extremos (<code>min</code>/<code>max</code>) son <strong>detectores de valores fuera de dominio</strong> sin necesidad de escribir filtros explicitos.</li>
+                        <li>La media y la desviacion estandar funcionan como <strong>indicadores de sesgo</strong> causado por datos inexactos.</li>
+                        <li>Permite una <strong>inspeccion exploratoria rapida</strong> antes de implementar reglas de validacion detalladas.</li>
+                    </ul>
+
+                    <div class="highlight-box critical">
+                        No detecta fallas de Validez (formato) ni de Completitud (los <code>NaN</code> se excluyen del calculo por defecto), lo que lo hace una herramienta <strong>especializada</strong> en la dimension de Exactitud para columnas numericas.
+                    </div>
+                </div>
+            </section>
+
+            <!-- PREGUNTA D -->
+            <section class="question-block">
+                <div class="question-label">Pregunta D &mdash; Investigacion</div>
+                <div class="question-text">&iquest;Que es el concepto de "Data Governance" y como se relaciona con asegurar las dimensiones de calidad en una empresa?</div>
+                <div class="answer">
+                    <p><strong>Data Governance</strong> (Gobernanza de Datos) es el marco organizacional que define politicas, roles, responsabilidades y procesos para gestionar los datos como activo estrategico. Establece <strong>quien</strong> puede tomar <strong>que</strong> decisiones sobre <strong>que</strong> datos, <strong>cuando</strong> y <strong>como</strong>.</p>
+
+                    <h3>Relacion con las dimensiones de calidad</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Componente de Governance</th>
+                                <th>Dimension que asegura</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Politicas de ingreso de datos (validaciones en formularios, restricciones de BD)</td>
+                                <td>Validez, Exactitud</td>
+                            </tr>
+                            <tr>
+                                <td>Procesos de deduplicacion y matching</td>
+                                <td>Unicidad</td>
+                            </tr>
+                            <tr>
+                                <td>Contratos de nivel de servicio (SLA) de actualizacion</td>
+                                <td>Actualidad</td>
+                            </tr>
+                            <tr>
+                                <td>Estandares de formato y nomenclatura</td>
+                                <td>Consistencia</td>
+                            </tr>
+                            <tr>
+                                <td>Auditorias periodicas y monitoreo de nulos</td>
+                                <td>Completitud</td>
+                            </tr>
+                            <tr>
+                                <td>Data Stewards (responsables de dominio)</td>
+                                <td>Todas las dimensiones</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="highlight-box success">
+                        Sin Data Governance, las dimensiones de calidad se gestionan de forma <strong>reactiva</strong> (se detectan errores despues del hecho). Con Governance, se gestionan de forma <strong>proactiva</strong>: se definen reglas, se automatizan validaciones, se asignan responsables, y se mide compliance continuo. El framework <strong>DAMA-DMBOK</strong> posiciona la calidad de datos como uno de los 11 dominios del Data Management, subordinado directamente al paraguas de Governance.
+                    </div>
+                </div>
+            </section>
+
+            <!-- PREGUNTA E -->
+            <section class="question-block">
+                <div class="question-label">Pregunta E &mdash; Analisis de Caso</div>
+                <div class="question-text">En el codigo anterior, detectamos que Pedro Perez tiene una edad de -5. Si aplicamos el pilar de limpieza e imputamos esa edad con el promedio, &iquest;estamos mejorando la Exactitud o solo la Completitud? Justifica.</div>
+                <div class="answer">
+                    <p>Pedro Perez tiene <code>Edad = -5</code>. Si se imputa con el promedio del resto de edades validas (excluyendo <code>NaN</code> y outliers como <code>150</code>):</p>
+
+                    <div class="code-block">
+                        edades_validas = df[(df[<span class="string">'Edad'</span>] >= <span class="number">0</span>) & (df[<span class="string">'Edad'</span>] <= <span class="number">120</span>)][<span class="string">'Edad'</span>]<br>
+                        promedio = edades_validas.<span class="func">mean</span>() &nbsp;<span class="comment"># &asymp; 29.5</span>
+                    </div>
+
+                    <h3>Se mejora la Exactitud, no la Completitud.</h3>
+
+                    <ul>
+                        <li><strong>Completitud</strong> no estaba comprometida en este registro. Pedro Perez tiene un valor en la columna <code>Edad</code> (<code>-5</code>). El campo no es <code>NaN</code>/nulo. La Completitud de esa celda es del 100%.</li>
+                        <li><strong>Exactitud</strong> si estaba comprometida: <code>-5</code> no es una edad humana real. Se encuentra fuera del rango logico <code>[0, 120]</code>. Al reemplazar <code>-5</code> con el promedio (~29.5), el valor pasa a estar dentro del rango aceptable, mejorando la Exactitud.</li>
+                    </ul>
+
+                    <div class="highlight-box critical">
+                        <strong>Matiz critico:</strong> la imputacion por promedio no garantiza <strong>Exactitud real</strong>, solo <strong>Exactitud plausible</strong>. La edad real de Pedro Perez podria ser 40, 22 o cualquier otro valor. Se reemplaza un dato <em>demostrablemente falso</em> por un dato <em>estadisticamente plausible pero potencialmente incorrecto</em>. La Exactitud mejora en el sentido de que el valor ya no viola reglas de dominio, pero no se restaura al valor verdadero. La tecnica correcta seria verificar contra la fuente original (documento de identidad, registro civil), lo cual pertenece al pilar de <strong>verificacion</strong>, no de imputacion estadistica.
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Informe generado para Clase 03 &mdash; Taller de Auditoria de Calidad de Datos &mdash; 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

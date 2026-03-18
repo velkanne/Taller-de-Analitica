@@ -1,0 +1,9 @@
+ID_Usuario,Nombre,Edad,Email,Fecha_Registro
+1,Juan Gomez,25.0,juan@gmail.com,2024-01-01
+2,Ana Silva,30.0,ana@cl,2024-01-01
+2,Ana Silva,30.0,ana@cl,2024-01-01
+3,Pedro Perez,-5.0,pperez@gmail.com,01/01/24
+4,Luis Jara,150.0,l.jara,2024-01-01
+5,Marta Diaz,28.0,marta@gmail.com,2023-12-01
+6,Jose Perez,,jp@gmail.com,2024-01-01
+7,Raul V.,35.0,raul@gmail.com,2024-01-01

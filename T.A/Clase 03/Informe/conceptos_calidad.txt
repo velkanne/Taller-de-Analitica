@@ -1,0 +1,52 @@
+================================================================
+  DIMENSIONES DE CALIDAD DE DATOS
+  Clase 03 - Taller de Auditoria
+================================================================
+
+1. EXACTITUD (Accuracy)
+   Los datos reflejan correctamente la realidad del mundo.
+   Un valor es exacto si corresponde al hecho real que representa.
+   Ejemplo: Edad = -5 o Edad = 150 son inexactos porque no existen
+   edades humanas fuera del rango logico [0, 120].
+
+----------------------------------------------------------------
+
+2. COMPLETITUD (Completeness)
+   El dataset contiene todos los datos requeridos, sin ausencias.
+   Se mide como la proporcion de campos no nulos sobre el total.
+   Ejemplo: una columna "Telefono" con muchos NaN tiene baja
+   Completitud, impidiendo acciones que dependan de ese campo.
+
+----------------------------------------------------------------
+
+3. CONSISTENCIA (Consistency)
+   Los datos siguen el mismo formato y convencion a lo largo de
+   todo el dataset y entre distintos sistemas.
+   Ejemplo: la columna "Fecha_Registro" con valores '2024-01-01'
+   y '01/01/24' es inconsistente porque mezcla dos formatos.
+
+----------------------------------------------------------------
+
+4. ACTUALIDAD (Timeliness)
+   Los datos estan disponibles y vigentes en el momento que se
+   necesitan para tomar una decision o ejecutar un proceso.
+   Ejemplo: un numero de telefono registrado hace 5 anos puede
+   estar desactualizado y no ser util para una campana de hoy.
+
+----------------------------------------------------------------
+
+5. UNICIDAD (Uniqueness)
+   Cada entidad real aparece una sola vez en el dataset.
+   La presencia de registros duplicados viola esta dimension.
+   Ejemplo: "Ana Silva" con ID_Usuario = 2 aparece dos veces
+   en el dataset de auditoria, generando un duplicado exacto.
+
+----------------------------------------------------------------
+
+6. VALIDEZ (Validity)
+   Los datos cumplen con las reglas de formato o estructura
+   definidas para ese campo (sintaxis, tipo, patron, rango).
+   Ejemplo: el email 'l.jara' no contiene '@', por lo tanto
+   no cumple el formato valido de una direccion de correo.
+
+================================================================
